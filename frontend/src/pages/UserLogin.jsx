@@ -1,17 +1,37 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { UserDataContext } from "../context/userContext";
 
 const UserLogin = () => {
   const [data, setData] = useState({
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
+  const { user, setUser } = React.useContext(UserDataContext);
   const changeData = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
-  const handlesubmit = (e) => {
+  const handlesubmit = async (e) => {
     e.preventDefault();
     // console.log(data.email, data.password);
+    // console.log(data);
+    const userData = {
+      email: data.email,
+      password: data.password,
+    };
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/users/signin`,
+      userData
+    );
+    // console.log(response);
+    if (response.status === 200) {
+      const data = response.data;
+      localStorage.setItem("token", data.token);
+      setUser(data);
+      navigate("/home");
+    }
     setData({
       email: "",
       password: "",
@@ -37,7 +57,9 @@ const UserLogin = () => {
             placeholder="email@example.com"
             name="email"
             value={data.email}
-            onChange={changeData}
+            onChange={(e) => {
+              changeData(e);
+            }}
             required
             className="bg-[#eeeeee] rounded px-4 py-2 border w-full text-lg placeholder:text-base mb-7"
           />
@@ -47,7 +69,9 @@ const UserLogin = () => {
             placeholder="password"
             name="password"
             value={data.password}
-            onChange={changeData}
+            onChange={(e) => {
+              changeData(e);
+            }}
             required
             className="bg-[#eeeeee] rounded px-4 py-2 border w-full text-lg placeholder:text-base mb-7"
           />

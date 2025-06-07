@@ -15,6 +15,6 @@ app.get("/", (req, res) => {
 });
 const userRouter = require("./routes/user.routes");
 const captionRouter = require("./routes/captain.routes");
-app.use("/api/v1/user", userRouter);
-app.use("/api/v1/captain", captionRouter);
+app.use("/users", userRouter);
+app.use("/captains", captionRouter);
 module.exports = app;

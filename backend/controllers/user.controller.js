@@ -31,7 +31,7 @@ module.exports.registerUser = async (req, res, next) => {
     if (!token) {
       return res.json({ message: "Token not generated" }).status(404);
     }
-    return res.status(200).json({ user, token });
+    return res.status(201).json({ user, token });
   } catch (err) {
     return res.status(500).json({ message: "Internal server error" });
   }
@@ -53,7 +53,7 @@ module.exports.signinUser = async (req, res, next) => {
       return res.json({ message: "Token not generated" }).status(404);
     }
     res.cookie("token", token);
-    return res.json({ user, token }).status(200);
+    return res.json({ user, token }).status(201);
   } catch (err) {
     console.log(`Error occurred: ${err}`);
     return res.json({ message: "Internal server error" }).status(404);
@@ -61,17 +61,17 @@ module.exports.signinUser = async (req, res, next) => {
 };
 
 module.exports.userLogout = async (req, res, next) => {
-  const token = req.cookies.token || req.header.authorization.split(" ")[1];
+  const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
   if (!token) {
     return res
       .status(401)
       .json({ message: "Unauthorized access at token in controller" });
   }
   await blacklistModel.create({ token });
-  res.clearcookie("token");
-  res.status(200).json({ message: "Logged out Sucesssfully" });
+  res.clearCookie("token");
+  return res.status(201).json({ message: "Logged out Sucesssfully" });
 };
 
 module.exports.userProfile = async (req, res, next) => {
-  return res.status(200).json(req.user);
+  return res.status(201).json(req.user);
 };
