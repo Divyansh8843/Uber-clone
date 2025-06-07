@@ -31,8 +31,6 @@ module.exports.registerUser = async (req, res, next) => {
     if (!token) {
       return res.json({ message: "Token not generated" }).status(404);
     }
-    // user.token = token;
-    // await user.save();
     return res.status(200).json({ user, token });
   } catch (err) {
     return res.status(500).json({ message: "Internal server error" });
