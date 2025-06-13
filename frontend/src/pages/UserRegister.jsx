@@ -117,7 +117,7 @@ const UserRegister = () => {
       </div>
       <div>
         <p className="text-[10px] leading-tight">
-          BBy signing up, you agree to our{" "}
+          By signing up, you agree to our{" "}
           <span className="underline">Terms of Service</span>,{" "}
           <span className="underline">Privacy Policy</span>, and{" "}
           <span className="underline">Community Guidelines</span>. We may use

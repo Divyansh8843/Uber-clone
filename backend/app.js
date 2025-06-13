@@ -15,6 +15,11 @@ app.get("/", (req, res) => {
 });
 const userRouter = require("./routes/user.routes");
 const captionRouter = require("./routes/captain.routes");
+const mapRouter = require("./routes/maps.routes");
+const rideRouter = require("./routes/ride.routes");
 app.use("/users", userRouter);
 app.use("/captains", captionRouter);
+app.use("/maps", mapRouter);
+app.use("/rides", rideRouter);
+
 module.exports = app;

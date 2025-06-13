@@ -29,7 +29,7 @@ const CaptainLogin = () => {
       const data = response.data;
       // console.log(data);
       localStorage.setItem("token", data.token);
-      setCaptain(data);
+      setCaptain(data.captain);
       navigate("/captain-home");
     }
     setData({
