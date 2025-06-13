@@ -1,44 +1,16 @@
-# Uber Clone Backend
+---
 
-This is the backend API for the Uber Clone project. It is built with Node.js, Express, and MongoDB.
+# API Reference
 
-## Getting Started
+## Users
 
-### Prerequisites
+### Register User
 
-- Node.js
-- MongoDB
-
-### Installation
-
-1. Install dependencies:
-
-   ```bash
-   npm install
-   ```
-
-2. Create a `.env` file in the backend root with the following variables:
-
-   ```
-   MONGODB_URI=your_mongodb_connection_string
-   JWT_SECRET_KEY=your_jwt_secret
-   ```
-
-3. Start the server:
-   ```bash
-   npm start
-   ```
-
-## API Endpoints
-
-### User Registration
-
-**POST** `/api/v1/user/register`
+**POST** `/users/register`
 
 Registers a new user.
 
-#### Request Body
-
+**Request Body:**
 ```json
 {
   "fullname": {
@@ -50,116 +22,30 @@ Registers a new user.
 }
 ```
 
-#### Responses
-
-- **200 OK**  
-  User registered successfully. Returns the user object and JWT token.
-
-  ```json
-  {
-    "user": {
-      /* user object */
-    },
-    "token": "jwt_token_here"
-  }
-  ```
-
-- **400 Bad Request**  
-  Validation failed (e.g., invalid email, short password, missing fields).
-
-  ```json
-  {
-    "errors": [
-      {
-        "msg": "First name must be at least 3 characters long",
-        "param": "fullname.firstname",
-        "location": "body"
-      }
-      // ...other errors
-    ]
-  }
-  ```
-
-- **404 Not Found**  
-  Password hashing failed.
-
-  ```json
-  {
-    "message": "hash password not found"
-  }
-  ```
-
-- **500 Internal Server Error**  
-  Unexpected server error.
-  ```json
-  {
-    "message": "Internal server error"
-  }
-  ```
-
----
-
-Add more endpoints and documentation as your backend grows.
-
-## User Registration
-
-**POST** `/api/v1/user/register`
-
-Registers a new user.
-
-### Request Body
-
-```json
-{
-  "fullname": {
-    "firstname": "John",
-    "lastname": "Doe"
-  },
-  "email": "john.doe@example.com",
-  "password": "yourpassword"
-}
-```
-
-### Example Success Response
-
+**Success Response (201):**
 ```json
 {
   "user": {
     "_id": "665f1e2b8c1a2e0012a34567",
-    "fullname": {
-      "firstname": "John",
-      "lastname": "Doe"
-    },
+    "fullname": { "firstname": "John", "lastname": "Doe" },
     "email": "john.doe@example.com"
-    // ...other user fields
   },
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  "token": "jwt_token_here"
 }
 ```
 
-### Example Error Response
-
-```json
-{
-  "errors": [
-    {
-      "msg": "First name must be at least 3 characters long",
-      "param": "fullname.firstname",
-      "location": "body"
-    }
-  ]
-}
-```
+**Error Responses:**
+- 400: Validation error
+- 404: Password hashing failed
+- 500: Internal server error
 
 ---
 
-## User Sign In
+### User Sign In
 
-**POST** `/api/v1/user/signin`
+**POST** `/users/signin`
 
-Authenticates a user and returns a JWT token if credentials are valid.
-
-### Request Body
+**Request Body:**
 
 ```json
 {
@@ -168,118 +54,60 @@ Authenticates a user and returns a JWT token if credentials are valid.
 }
 ```
 
-### Example Success Response
+**Success Response (201):**
 
 ```json
 {
   "user": {
     "_id": "665f1e2b8c1a2e0012a34567",
-    "fullname": {
-      "firstname": "John",
-      "lastname": "Doe"
-    },
+    "fullname": { "firstname": "John", "lastname": "Doe" },
     "email": "john.doe@example.com"
-    // ...other user fields
   },
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  "token": "jwt_token_here"
 }
 ```
 
-### Example Error Responses
+**Error Responses:**
 
-- **401 Unauthorized**
-
-  ```json
-  {
-    "message": "Invalid Email or Password"
-  }
-  ```
-
-- **400 Bad Request**
-
-  ```json
-  {
-    "errors": [
-      {
-        "msg": "Password must be at least 6 characters long",
-        "param": "password",
-        "location": "body"
-      }
-    ]
-  }
-  ```
-
-- **404 Not Found**
-
-  ```json
-  {
-    "message": "Invalid Email or Password"
-  }
-  ```
-
-- **500 Internal Server Error**
-  ```json
-  {
-    "message": "Internal server error"
-  }
-  ```
+- 400: Validation error
+- 401: Invalid Email or Password
+- 404: Invalid Email or Password
+- 500: Internal server error
 
 ---
 
-## User Profile
+### User Profile
 
-**GET** `/api/v1/user/profile`
+**GET** `/users/profile`
 
-Returns the authenticated user's profile information.  
-**Requires Authorization header with Bearer token.**
+**Headers:**  
+`Authorization: Bearer <token>`
 
-### Example Request
-
-```
-GET /api/v1/user/profile
-Authorization: Bearer <jwt_token>
-```
-
-### Example Success Response
+**Success Response (201):**
 
 ```json
 {
   "_id": "665f1e2b8c1a2e0012a34567",
-  "fullname": {
-    "firstname": "John",
-    "lastname": "Doe"
-  },
+  "fullname": { "firstname": "John", "lastname": "Doe" },
   "email": "john.doe@example.com",
   "socketId": null
-  // ...other user fields
 }
 ```
 
-### Example Error Response
+**Error Response:**
 
-```json
-{
-  "message": "Unauthorized access"
-}
-```
+- 401: Unauthorized
 
 ---
 
-## User Logout
+### User Logout
 
-**GET** `/api/v1/user/logout`
+**GET** `/users/logout`
 
-Logs out the authenticated user by blacklisting the JWT token and clearing the cookie.  
-**Requires Authorization header with Bearer token.**
+**Headers:**  
+`Authorization: Bearer <token>`
 
-### Example Request
-
-```
-GET /api/v1/user/logout
-Authorization: Bearer <jwt_token>
-```
-
-### Example Success Response
+**Success Response (201):**
 
 ```json
 {
@@ -287,25 +115,19 @@ Authorization: Bearer <jwt_token>
 }
 ```
 
-### Example Error Response
+**Error Response:**
 
-```json
-{
-  "message": "Unauthorized access"
-}
-```
+- 401: Unauthorized
 
 ---
 
-## Captain API Endpoints
+## Captains
 
 ### Register Captain
 
-**POST** `/api/v1/captain/register`
+**POST** `/captains/register`
 
-Registers a new captain (driver) with vehicle details.
-
-#### Request Body
+**Request Body:**
 
 ```json
 {
@@ -324,16 +146,13 @@ Registers a new captain (driver) with vehicle details.
 }
 ```
 
-#### Example Success Response
+**Success Response (200):**
 
 ```json
 {
   "captain": {
     "_id": "665f1e2b8c1a2e0012a34567",
-    "fullname": {
-      "firstname": "Jane",
-      "lastname": "Smith"
-    },
+    "fullname": { "firstname": "Jane", "lastname": "Smith" },
     "email": "jane.smith@example.com",
     "status": "inactive",
     "vehicle": {
@@ -343,40 +162,25 @@ Registers a new captain (driver) with vehicle details.
       "vehicleType": "car"
     },
     "socketId": null,
-    "location": {
-      "latitude": null,
-      "longitude": null
-    }
-    // ...other captain fields
+    "location": { "ltd": null, "lng": null }
   },
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  "token": "jwt_token_here"
 }
 ```
 
-#### Example Error Response
+**Error Responses:**
 
-```json
-{
-  "errors": [
-    {
-      "msg": "First name must be at least 3 characters long",
-      "param": "fullname.firstname",
-      "location": "body"
-    }
-    // ...other errors
-  ]
-}
-```
+- 400: Validation error
+- 404: Password hashing failed
+- 500: Internal server error
 
 ---
 
 ### Captain Sign In
 
-**POST** `/api/v1/captain/signin`
+**POST** `/captains/signin`
 
-Authenticates a captain and returns a JWT token if credentials are valid.
-
-#### Request Body
+**Request Body:**
 
 ```json
 {
@@ -385,16 +189,13 @@ Authenticates a captain and returns a JWT token if credentials are valid.
 }
 ```
 
-#### Example Success Response
+**Success Response (200):**
 
 ```json
 {
   "captain": {
     "_id": "665f1e2b8c1a2e0012a34567",
-    "fullname": {
-      "firstname": "Jane",
-      "lastname": "Smith"
-    },
+    "fullname": { "firstname": "Jane", "lastname": "Smith" },
     "email": "jane.smith@example.com",
     "status": "inactive",
     "vehicle": {
@@ -403,60 +204,33 @@ Authenticates a captain and returns a JWT token if credentials are valid.
       "capacity": 4,
       "vehicleType": "car"
     }
-    // ...other captain fields
   },
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  "token": "jwt_token_here"
 }
 ```
 
-#### Example Error Responses
+**Error Responses:**
 
-- **401 Unauthorized**
-
-  ```json
-  {
-    "message": "Invalid Email or Password"
-  }
-  ```
-
-- **400 Bad Request**
-  ```json
-  {
-    "errors": [
-      {
-        "msg": "Password must be at least 6 characters long",
-        "param": "password",
-        "location": "body"
-      }
-    ]
-  }
-  ```
+- 400: Validation error
+- 401: Invalid Email or Password
+- 404: Invalid Email or Password
+- 500: Internal server error
 
 ---
 
 ### Captain Profile
 
-**GET** `/api/v1/captain/profile`
+**GET** `/captains/profile`
 
-Returns the authenticated captain's profile information.  
-**Requires Authorization header with Bearer token.**
+**Headers:**  
+`Authorization: Bearer <token>`
 
-#### Example Request
-
-```
-GET /api/v1/captain/profile
-Authorization: Bearer <jwt_token>
-```
-
-#### Example Success Response
+**Success Response (200):**
 
 ```json
 {
   "_id": "665f1e2b8c1a2e0012a34567",
-  "fullname": {
-    "firstname": "Jane",
-    "lastname": "Smith"
-  },
+  "fullname": { "firstname": "Jane", "lastname": "Smith" },
   "email": "jane.smith@example.com",
   "status": "inactive",
   "vehicle": {
@@ -466,39 +240,24 @@ Authorization: Bearer <jwt_token>
     "vehicleType": "car"
   },
   "socketId": null,
-  "location": {
-    "latitude": null,
-    "longitude": null
-  }
-  // ...other captain fields
+  "location": { "ltd": null, "lng": null }
 }
 ```
 
-#### Example Error Response
+**Error Response:**
 
-```json
-{
-  "message": "Unauthorized access"
-}
-```
+- 401: Unauthorized
 
 ---
 
 ### Captain Logout
 
-**GET** `/api/v1/captain/logout`
+**GET** `/captains/logout`
 
-Logs out the authenticated captain by blacklisting the JWT token and clearing the cookie.  
-**Requires Authorization header with Bearer token.**
+**Headers:**  
+`Authorization: Bearer <token>`
 
-#### Example Request
-
-```
-GET /api/v1/captain/logout
-Authorization: Bearer <jwt_token>
-```
-
-#### Example Success Response
+**Success Response (200):**
 
 ```json
 {
@@ -506,10 +265,299 @@ Authorization: Bearer <jwt_token>
 }
 ```
 
-#### Example Error Response
+**Error Response:**
+
+- 401: Unauthorized
+
+---
+
+## Maps
+
+### Get Coordinates
+
+**GET** `/maps/get-coordinates?address=Some+Address`
+
+**Headers:**  
+`Authorization: Bearer <token>`
+
+**Success Response (200):**
 
 ```json
 {
-  "message": "Unauthorized access"
+  "lat": 28.7041,
+  "lng": 77.1025
 }
 ```
+
+**Error Responses:**
+
+- 400: Validation error
+- 404: Address Not found / Coordinates Not Found
+
+---
+
+### Get Distance and Time
+
+**GET** `/maps/get-distance-time?origin=AddressA&destination=AddressB`
+
+**Headers:**  
+`Authorization: Bearer <token>`
+
+**Success Response (200):**
+
+```json
+{
+  "distance": { "text": "12 km", "value": 12000 },
+  "duration": { "text": "25 mins", "value": 1500 }
+}
+```
+
+**Error Responses:**
+
+- 400: Validation error
+- 404: Details Not Found / Distance Not Found
+
+---
+
+### Get Suggestions
+
+**GET** `/maps/get-suggestions?input=delhi`
+
+**Headers:**  
+`Authorization: Bearer <token>`
+
+**Success Response (200):**
+
+```json
+[
+  { "description": "Delhi, India", "place_id": "ChIJL_P_CXMEDTkRw0ZdG-0GVvw" },
+  {
+    "description": "New Delhi, India",
+    "place_id": "ChIJLbZ-NFv9DDkRzk0gTkm3wlI"
+  }
+]
+```
+
+**Error Responses:**
+
+- 400: Validation error
+- 404: query not Found / Distance Not Found
+
+---
+
+## Rides
+
+### Create Ride
+
+**POST** `/rides/create`
+
+**Headers:**  
+`Authorization: Bearer <token>`
+
+**Request Body:**
+
+```json
+{
+  "pickup": "123 Main St",
+  "destination": "456 Elm St",
+  "vehicleType": "car"
+}
+```
+
+**Success Response (200):**
+
+```json
+{
+  "_id": "665f1e2b8c1a2e0012a34567",
+  "pickup": "123 Main St",
+  "destination": "456 Elm St",
+  "user": "665f1e2b8c1a2e0012a34567",
+  "fare": 120.5,
+  "status": "pending",
+  "otp": "123456"
+}
+```
+
+**Error Responses:**
+
+- 400: Validation error
+- 404: Details Not Found
+- 500: Error occurred
+
+---
+
+### Find Fare
+
+**POST** `/rides/findfare`
+
+**Headers:**  
+`Authorization: Bearer <token>`
+
+**Request Body:**
+
+```json
+{
+  "pickup": "123 Main St",
+  "destination": "456 Elm St"
+}
+```
+
+**Success Response (200):**
+
+```json
+{
+  "auto": 80.5,
+  "moto": 60.0,
+  "car": 120.5
+}
+```
+
+**Error Responses:**
+
+- 400: Validation error
+- 404: Details Not Found
+- 500: Error occurred
+
+---
+
+### Confirm Ride
+
+**POST** `/rides/confirm`
+
+**Headers:**  
+`Authorization: Bearer <captain_token>`
+
+**Request Body:**
+
+```json
+{
+  "rideId": "665f1e2b8c1a2e0012a34567"
+}
+```
+
+**Success Response (200):**
+
+```json
+{
+  "_id": "665f1e2b8c1a2e0012a34567",
+  "pickup": "123 Main St",
+  "destination": "456 Elm St",
+  "user": {
+    /* user object */
+  },
+  "captain": {
+    /* captain object */
+  },
+  "fare": 120.5,
+  "status": "accepted",
+  "otp": "123456"
+}
+```
+
+**Error Responses:**
+
+- 400: Validation error
+- 404: Details Not Found
+- 500: Error occurred
+
+---
+
+### Start Ride
+
+**GET** `/rides/start-ride?rideId=<rideId>&otp=<otp>`
+
+**Headers:**  
+`Authorization: Bearer <captain_token>`
+
+**Success Response (200):**
+
+```json
+{
+  "_id": "665f1e2b8c1a2e0012a34567",
+  "pickup": "123 Main St",
+  "destination": "456 Elm St",
+  "user": {
+    /* user object */
+  },
+  "captain": {
+    /* captain object */
+  },
+  "fare": 120.5,
+  "status": "ongoing",
+  "otp": "123456"
+}
+```
+
+**Error Responses:**
+
+- 400: Validation error
+- 404: Details Not Found / Invalid Otp
+- 500: Error occurred
+
+---
+
+### Finish Ride
+
+**POST** `/rides/finish-ride`
+
+**Headers:**  
+`Authorization: Bearer <captain_token>`
+
+**Request Body:**
+
+```json
+{
+  "rideId": "665f1e2b8c1a2e0012a34567"
+}
+```
+
+**Success Response (200):**
+
+```json
+{
+  "_id": "665f1e2b8c1a2e0012a34567",
+  "pickup": "123 Main St",
+  "destination": "456 Elm St",
+  "user": {
+    /* user object */
+  },
+  "captain": {
+    /* captain object */
+  },
+  "fare": 120.5,
+  "status": "completed",
+  "otp": "123456"
+}
+```
+
+**Error Responses:**
+
+- 400: Validation error
+- 404: Details Not Found
+- 500: Error occurred
+
+---
+
+## Error Response Example
+
+```json
+{
+  "errors": [
+    {
+      "msg": "First name must be at least 3 characters long",
+      "param": "fullname.firstname",
+      "location": "body"
+    }
+  ]
+}
+```
+
+---
+
+**Note:**  
+All endpoints that require authentication expect the JWT token in the `Authorization` header as `Bearer <token>`.  
+All endpoints return appropriate HTTP status codes and error messages as shown above.
+
+---
+
+For more details, refer to the controller and route files in the [backend/routes](routes/) and [backend/controllers](controllers/)
