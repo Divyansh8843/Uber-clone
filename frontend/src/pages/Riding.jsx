@@ -16,10 +16,8 @@ const Riding = () => {
   const rideData = location.state?.ride;
   recieveMessage("ride-ended", (ride) => {
     console.log("Data with message for user for end ride");
-    // console.log(ride);
     navigate("/home");
   });
-
   return (
     <div className="h-screen w-screen fixed">
       <Link

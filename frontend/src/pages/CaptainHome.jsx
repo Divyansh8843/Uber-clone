@@ -108,7 +108,7 @@ const CaptainHome = () => {
           className="w-16"
         />
         <Link
-          to="/home"
+          to="/captain-home"
           className="flex  h-10 w-10 items-center rounded-full bg-white  justify-center text-xl"
         >
           <IoExitSharp />
@@ -117,7 +117,7 @@ const CaptainHome = () => {
       <div className="h-3/5 ">
         <LiveTracking />
       </div>
-      <div className="h-2/5 p-6 absolute bg-white">
+      <div className="h-2/5 p-6 absolute bg-white w-full">
         <CaptainDetails />
       </div>
       <div

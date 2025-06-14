@@ -104,6 +104,7 @@ const ConfirmRedepopUp = ({ setConfirmPopUpOpen, ride }) => {
               placeholder="Enter OTP"
               name="otp"
               value={otp}
+              required
               onChange={(e) => {
                 setOtp(e.target.value);
               }}

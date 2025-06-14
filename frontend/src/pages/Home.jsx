@@ -129,7 +129,6 @@ const Home = () => {
   });
   recieveMessage("ride-started", (ride) => {
     console.log("Data with message for user for start ride");
-    // console.log(ride);
     setDriverWaited(false);
     navigate("/riding", { state: { ride: ride } });
   });
