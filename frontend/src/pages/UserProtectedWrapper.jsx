@@ -3,7 +3,7 @@ import { useContext } from "react";
 import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { UserDataContext } from "../context/userContext";
+import { UserDataContext } from "../context/UserContext";
 export const UserProtectedWrapper = ({ children }) => {
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserDataContext);
