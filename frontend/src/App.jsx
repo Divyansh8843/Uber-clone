@@ -12,7 +12,7 @@ import {
 import UserRegister from "./pages/UserRegister";
 import CaptainRegister from "./pages/CaptainRegister";
 import CaptainLogin from "./pages/CaptainLogin";
-import { UserDataContext } from "./context/userContext";
+import { UserDataContext } from "./context/UserContext";
 import Home from "./pages/Home";
 import { UserProtectedWrapper } from "./pages/UserProtectedWrapper";
 import { CaptainProtectedWrapper } from "./pages/CaptainProtectedWrapper";

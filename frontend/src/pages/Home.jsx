@@ -12,7 +12,7 @@ import LookingForDriver from "../components/LookingForDriver";
 import WaitForDriver from "../components/WaitForDriver";
 import { CaptainDataContext } from "../context/CaptainContext";
 import { SocketContext } from "../context/SocketContext";
-import { UserDataContext } from "../context/";
+import { UserDataContext } from "../context/UserContext";
 import LiveTracking from "../components/LiveTracking";
 const Home = () => {
   const [pickup, setPickup] = useState("");
