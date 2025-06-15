@@ -8,7 +8,6 @@ const UserRegister = () => {
   const [password, setPassword] = useState("");
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
-  // const [userData, setUserData] = useState({});
   const { user, setUser } = React.useContext(UserDataContext);
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
@@ -110,7 +109,7 @@ const UserRegister = () => {
         </form>
         <p className="text-center text-lg">
           Already have a account? &nbsp;
-          <Link className="text-blue-600 cursor-pointer>" to="/signin">
+          <Link className="text-blue-600 cursor-pointer" to="/signin">
             Login here
           </Link>
         </p>

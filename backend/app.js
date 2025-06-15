@@ -1,13 +1,19 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const app = express();
 const ConnectToDB = require("./db/db");
 const cookieParser = require("cookie-parser");
 ConnectToDB();
 app.use(cookieParser());
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://zippyrideuber.vercel.app", // replace with actual Vercel domain
+    credentials: true, // if you're using cookies or auth headers
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
