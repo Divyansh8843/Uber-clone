@@ -22,7 +22,7 @@ const ConfirmRedepopUp = ({ setConfirmPopUpOpen, ride }) => {
             otp,
           },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")} `,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );

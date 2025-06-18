@@ -13,7 +13,7 @@ import WaitForDriver from "../components/WaitForDriver";
 import { CaptainDataContext } from "../context/CaptainContext";
 import { SocketContext } from "../context/SocketContext";
 import { UserDataContext } from "../context/UserContext";
-
+import ConfirmPayment from "../components/ConfirmPayment";
 import LiveTracking from "../components/LiveTracking";
 const Home = () => {
   const [pickup, setPickup] = useState("");
@@ -26,6 +26,7 @@ const Home = () => {
   const [driverConfirmation, setDriverConfirmation] = useState(false);
   const [driverWaited, setDriverWaited] = useState(false);
   const [vehicleType, setVehicleType] = useState(null);
+  const [confirmedPayment, setConfirmedPayment] = useState(false);
   const navigate = useNavigate();
   const [ride, setRide] = useState(null);
   const vehicleRef = useRef(null);
@@ -38,10 +39,10 @@ const Home = () => {
   const [fares, setFares] = useState("");
   const DriverWaitedRef = useRef(null);
   const closeDriverWaiting = useRef(null);
-  const closebutton = useRef("");
+  const closebutton = useRef(null);
+  const ConfirmedPaymentRef = useRef(null);
   const [panelOpen, setPanelOpen] = useState(false);
   const { captain } = useContext(CaptainDataContext);
-
   const { user } = useContext(UserDataContext);
   const { sendMessage, recieveMessage, socket } = useContext(SocketContext);
   const closeConfirmed = useRef(null);
@@ -121,6 +122,7 @@ const Home = () => {
       userId: user._id,
     });
   }, [user]);
+
   recieveMessage("ride-confirm", (ride) => {
     console.log("Data with message for user");
     console.log("ride confirmed", ride);
@@ -131,8 +133,13 @@ const Home = () => {
   recieveMessage("ride-started", (ride) => {
     console.log("Data with message for user for start ride");
     setDriverWaited(false);
-    navigate("/riding", { state: { ride: ride } });
+    console.log("ride started");
+    setConfirmedPayment(true);
   });
+  // recieveMessage("ride-ended", (ride) => {
+  //   console.log("Data with message for user for end ride");
+  //   navigate("/home");
+  // });
   useGSAP(
     function () {
       if (panelOpen) {
@@ -180,6 +187,40 @@ const Home = () => {
       }
     },
     [vehicleOpen]
+  );
+  useGSAP(
+    function () {
+      if (vehicleOpen) {
+        gsap.to(vehicleRef.current, {
+          transform: "translateY(0)",
+        });
+        gsap.to(closeVehicle.current, {
+          opacity: "1",
+        });
+      } else {
+        gsap.to(vehicleRef.current, {
+          transform: "translateY(100%)",
+        });
+        gsap.to(closeVehicle.current, {
+          opacity: "0",
+        });
+      }
+    },
+    [vehicleOpen]
+  );
+  useGSAP(
+    function () {
+      if (confirmedPayment) {
+        gsap.to(ConfirmedPaymentRef.current, {
+          transform: "translateY(0)",
+        });
+      } else {
+        gsap.to(ConfirmedPaymentRef.current, {
+          transform: "translateY(100%)",
+        });
+      }
+    },
+    [confirmedPayment]
   );
   useGSAP(
     function () {
@@ -372,6 +413,15 @@ const Home = () => {
           <WaitForDriver
             closeDriverWaiting={closeDriverWaiting}
             setDriverWaited={setDriverWaited}
+            ride={ride}
+          />
+        </div>
+        <div
+          ref={ConfirmedPaymentRef}
+          className="fixed z-10 bottom-0 bg  bg-white px-3 pb-6 pt-12 w-full translate-y-full"
+        >
+          <ConfirmPayment
+            setConfirmedPayment={setConfirmedPayment}
             ride={ride}
           />
         </div>

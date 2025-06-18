@@ -1,6 +1,6 @@
 const userModel = require("../models/user.model");
 const rideModel = require("../models/ride.models");
-const mapService = require("../services/maps.service");
+const mapService = require("./maps.service");
 const crypto = require("crypto");
 const { sendMessageToSocketId } = require("../socket");
 // Uber-like fare calculation for auto, car, and motorcycle

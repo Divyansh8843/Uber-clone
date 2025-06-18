@@ -114,7 +114,7 @@ module.exports.startRide = async (req, res) => {
       otp,
       captain: req.captain,
     });
-    res.status(200).json(ride);
+    return res.status(200).json(ride);
   } catch (err) {
     return res.json({ error: err.message }).status(500);
   }

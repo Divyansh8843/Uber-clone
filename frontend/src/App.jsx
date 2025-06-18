@@ -11,14 +11,16 @@ import {
 } from "react-router-dom";
 import UserRegister from "./pages/UserRegister";
 import CaptainRegister from "./pages/CaptainRegister";
+import CheckoutSuccess from "./pages/CheckoutSuccess";
 import CaptainLogin from "./pages/CaptainLogin";
 import { UserDataContext } from "./context/UserContext";
 import Home from "./pages/Home";
 import { UserProtectedWrapper } from "./pages/UserProtectedWrapper";
 import { CaptainProtectedWrapper } from "./pages/CaptainProtectedWrapper";
 import CaptainHome from "./pages/CaptainHome";
-import Riding from "./pages/Riding";
+
 import CaptainRiding from "./pages/CaptainRiding";
+
 const App = () => {
   return (
     <div>
@@ -35,6 +37,8 @@ const App = () => {
           />
           <Route path="/register" element={<UserRegister />} />
           <Route path="/signin" element={<UserLogin />} />
+          <Route path="/checkout-success" element={<CheckoutSuccess />} />
+
           <Route
             path="/logout"
             element={
@@ -43,14 +47,7 @@ const App = () => {
               </UserProtectedWrapper>
             }
           />
-          <Route
-            path="/riding"
-            element={
-              <UserProtectedWrapper>
-                <Riding />
-              </UserProtectedWrapper>
-            }
-          />
+
           <Route
             path="/captain-home"
             element={
