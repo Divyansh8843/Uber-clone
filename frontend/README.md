@@ -506,9 +506,81 @@ VITE_BASE_URL=http://localhost:8080
 
 ---
 
-## License
+## Payment Endpoints
 
-MIT
+### Create Checkout Session
+
+**GET** `/bookings/checkout-session?rideId=<rideId>`
+
+**Headers:**  
+`Authorization: Bearer <user_token>`
+
+**Query Parameters:**
+
+- `rideId` (string, required): The MongoDB ObjectId of the ride to pay for.
+
+**Success Response:**
+
+```json
+{
+  "message": "Successfully paid",
+  "session": {
+    "id": "cs_test_a1b2c3d4e5",
+    "object": "checkout.session",
+    "url": "https://checkout.stripe.com/pay/cs_test_a1b2c3d4e5"
+    // ...other Stripe session fields
+  }
+}
+```
+
+**Usage Example in Frontend:**
+
+```js
+const response = await axios.get(
+  `${import.meta.env.VITE_BASE_URL}/bookings/checkout-session`,
+  {
+    params: { rideId },
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  }
+);
+window.location.href = response.data.session.url;
+```
+
+---
+
+## All Endpoints Overview
+
+### Users
+
+- `POST /users/register` — Register a new user
+- `POST /users/signin` — User login
+- `GET /users/profile` — Get user profile (auth required)
+- `GET /users/logout` — Logout user (auth required)
+
+### Captains
+
+- `POST /captains/register` — Register a new captain
+- `POST /captains/signin` — Captain login
+- `GET /captains/profile` — Get captain profile (auth required)
+- `GET /captains/logout` — Logout captain (auth required)
+
+### Maps
+
+- `GET /maps/get-coordinates?address=...` — Get coordinates for address (auth required)
+- `GET /maps/get-distance-time?origin=...&destination=...` — Get distance/time (auth required)
+- `GET /maps/get-suggestions?input=...` — Get address suggestions (auth required)
+
+### Rides
+
+- `POST /rides/create` — Create a new ride (auth required)
+- `POST /rides/findfare` — Calculate fare for a ride (auth required)
+- `POST /rides/confirm` — Captain confirms a ride (auth required)
+- `GET /rides/start-ride?rideId=...&otp=...` — Captain starts a ride (auth required)
+- `POST /rides/finish-ride` — Captain finishes a ride (auth required)
+
+### Payment
+
+- `GET /bookings/checkout-session?rideId=...` — Create Stripe checkout session for payment (auth required)
 
 ---
 

@@ -8,7 +8,7 @@ const cookieParser = require("cookie-parser");
 ConnectToDB();
 app.use(cookieParser());
 
-app.use(cors());
+app.use(cors({ origin: process.env.CLIENT_SITE_URL, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
